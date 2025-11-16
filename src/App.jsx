@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import axios from 'axios'
@@ -16,6 +16,7 @@ function App() {
 
   const checkSession = async () => {
     try {
+      // 페이지 새로고침 시 세션 정보 확인
       const response = await axios.get('/api/user/session', {
         headers: {
           'Content-Type': 'application/json'
@@ -26,16 +27,31 @@ function App() {
       console.log('세션 확인 성공:', response.data);
       
       // 세션 정보가 있으면 사용자 정보 저장
+      // 응답 형식: { status: "success", message: "로그인 성공", data: { id, email, nick_name } }
       if (response.data && response.data.status === 'success' && response.data.data) {
         const userData = response.data.data;
+        // 로컬스토리지 사용하지 않고 메모리에만 저장
         setUser({
           id: userData.id,
           email: userData.email,
-          nick_name: userData.nick_name
+          nick_name: userData.nick_name // 로그인명으로 사용
         });
+      } else {
+        // 세션 정보가 없거나 형식이 맞지 않으면 null로 설정
+        setUser(null);
       }
     } catch (error) {
-      console.log('세션 없음 또는 만료됨');
+      // 세션 없음, 만료됨, 또는 서버 오류
+      if (error.response) {
+        // 서버에서 응답이 온 경우 (401, 403 등)
+        console.log('세션 없음 또는 만료됨:', error.response.status);
+      } else if (error.request) {
+        // 요청은 보냈지만 응답을 받지 못한 경우
+        console.log('세션 확인 요청 실패:', error.request);
+      } else {
+        // 요청 설정 중 오류가 발생한 경우
+        console.log('세션 확인 오류:', error.message);
+      }
       setUser(null);
     } finally {
       setLoading(false);
@@ -88,7 +104,7 @@ function App() {
               fontSize: '2rem',
               textAlign: 'center'
             }}>
-              {user.nick_name}님 환영합니다!
+              {user.nick_name || user.email || '사용자'}님 환영합니다!
             </h1>
             <div style={{ 
               display: 'flex', 
@@ -257,6 +273,159 @@ function App() {
     )
   }
 
+  function Navigation() {
+    const navigate = useNavigate();
+
+    const navLinkStyle = {
+      color: '#333',
+      fontSize: '1.1em',
+      fontWeight: '500',
+      cursor: 'pointer',
+      textDecoration: 'none',
+      padding: '1em 0',
+      transition: 'color 0.3s',
+      backgroundColor: 'transparent',
+      border: 'none'
+    };
+
+    const rightLinkStyle = {
+      color: '#333',
+      fontSize: '1.1em',
+      cursor: 'pointer',
+      textDecoration: 'none',
+      padding: '1em 0',
+      transition: 'color 0.3s',
+      backgroundColor: 'transparent',
+      border: 'none'
+    };
+
+    return (
+      <nav style={{
+        backgroundColor: '#ffffff',
+        padding: '1.5rem 4rem',
+        borderBottom: '1px solid #e0e0e0',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        boxSizing: 'border-box'
+      }}>
+        <div style={{
+          display: 'flex',
+          gap: '2.5rem',
+          alignItems: 'center',
+          marginRight: '3rem'
+        }}>
+          <button 
+            onClick={() => navigate('/')}
+            style={navLinkStyle}
+            onMouseEnter={(e) => {
+              e.target.style.color = '#646cff';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.color = '#333';
+            }}
+          >
+            Home
+          </button>
+          <button 
+            onClick={() => navigate('/product')}
+            style={navLinkStyle}
+            onMouseEnter={(e) => {
+              e.target.style.color = '#646cff';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.color = '#333';
+            }}
+          >
+            Product
+          </button>
+          <button 
+            onClick={() => navigate('/service')}
+            style={navLinkStyle}
+            onMouseEnter={(e) => {
+              e.target.style.color = '#646cff';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.color = '#333';
+            }}
+          >
+            Service
+          </button>
+          <button 
+            onClick={() => navigate('/about')}
+            style={navLinkStyle}
+            onMouseEnter={(e) => {
+              e.target.style.color = '#646cff';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.color = '#333';
+            }}
+          >
+            About
+          </button>
+        </div>
+        <div style={{
+          display: 'flex',
+          gap: '1rem',
+          alignItems: 'center'
+        }}>
+          {user && (
+            <>
+              <span style={{
+                color: '#333',
+                fontSize: '1.1em',
+                fontWeight: '500'
+              }}>
+                {user.nick_name || user.email || '사용자'}
+              </span>
+              <span style={{
+                color: '#ccc',
+                fontSize: '1.1em',
+                margin: '0 0.5rem'
+              }}>
+                |
+              </span>
+            </>
+          )}
+          {user ? (
+            <button 
+              onClick={handleLogout}
+              style={{
+                ...rightLinkStyle,
+                color: '#e74c3c'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.color = '#c0392b';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.color = '#e74c3c';
+              }}
+            >
+              Logout
+            </button>
+          ) : (
+            <button 
+              onClick={() => navigate('/login')}
+              style={{
+                ...rightLinkStyle,
+                color: '#3498db'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.color = '#2980b9';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.color = '#3498db';
+              }}
+            >
+              Login
+            </button>
+          )}
+        </div>
+      </nav>
+    );
+  }
+
   // 로딩 중일 때
   if (loading) {
     return (
@@ -272,12 +441,20 @@ function App() {
     );
   }
 
+  const location = useLocation();
+  const isSignupPage = location.pathname === '/signup';
+  const isLoginPage = location.pathname === '/login';
+  const hideNavigation = isSignupPage || isLoginPage;
+
   return (
-    <Routes>
-      <Route path="/" element={<Home />}></Route>
-      <Route path="/signup" element={<Signup />}></Route>
-      <Route path="/login" element={<Login user={user} setUser={setUser} />}></Route>
-    </Routes>
+    <>
+      {!hideNavigation && <Navigation />}
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/login" element={<Login user={user} setUser={setUser} />}></Route>
+      </Routes>
+    </>
   )
 }
 
