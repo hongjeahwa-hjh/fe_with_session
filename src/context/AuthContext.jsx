@@ -11,6 +11,7 @@ function AuthProvider({ children }) {
       const response = await axios.get("/api/user/session", {
         withCredentials: true,
       });
+      console.log("세선 확인 응답:", response);
       if (response?.data?.status === "success") {
         setUser(response.data.data || null);
       } else {
@@ -19,8 +20,9 @@ function AuthProvider({ children }) {
     } catch (error) {
       console.error("세션 확인 실패:", error);
       setUser(null);
-    }
+    } 
   }
+  
 
   useEffect(() => {
     checkSession();

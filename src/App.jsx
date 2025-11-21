@@ -3,6 +3,7 @@ import './App.css';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import Home from './pages/Home';
 import axios from 'axios';
 
 function App() {
@@ -84,7 +85,7 @@ function App() {
     );
   }
 
-  // Navigation 컴포넌트
+  // Navigation 컴포넌
   function Navigation() {
     const navigate = useNavigate();
 

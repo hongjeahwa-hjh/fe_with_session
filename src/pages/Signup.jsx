@@ -1,12 +1,12 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { AuthContext } from './AuthContext';
+import useAuth from '../hooks/useAuth.js';
 import './Signup.css';
 
 function Signup() {
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); // Context에서 login 가져오기
+  const { login } = useAuth(); // Context에서 login 가져오기
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -128,4 +128,3 @@ function Signup() {
 console.log("test git change")
 
 export default Signup;
-

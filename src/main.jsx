@@ -9,12 +9,15 @@ import { BrowserRouter} from 'react-router-dom'
 import './index.css'
 // App.jsx 파일 가져오기
 import App from './App.jsx'   // App 컴포넌트를 가져오기
+import AuthProvider from './context/AuthContext.jsx'
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App /> {/* App 컴포넌트를 렌더링하기 */}
+      <AuthProvider>
+        <App /> {/* App 컴포넌트를 렌더링하기 */}
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )
