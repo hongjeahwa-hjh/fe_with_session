@@ -1,0 +1,101 @@
+* Signup.css */
+
+/* 페이지 컨테이너 */
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 2rem;
+    width: 100%;
+    background-color: #f5f5f5;
+  }
+  
+  /* 회원가입 폼 박스 */
+  .signup-form-wrapper {
+    background-color: #ffffff;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  /* 제목 */
+  .signup-form-wrapper h1 {
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+  }
+  
+  /* 폼 레이아웃 */
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* 레이블 스타일 */
+  .signup-form label {
+    font-weight: 500;
+    color: #333;
+    font-size: 0.95em;
+  }
+  
+  /* 입력 필드 스타일 */
+  .signup-form input {
+    padding: 0.75em;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1em;
+    font-family: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+  }
+  
+  /* 입력 필드 focus 상태 */
+  .signup-form input:focus {
+    border-color: #646cff;
+    box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.1);
+  }
+  
+  /* 버튼 스타일 */
+  .signup-form .button-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .signup-form button {
+    flex: 1;
+    padding: 0.75em;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .signup-form .cancel-button {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+  }
+  
+  .signup-form .cancel-button:hover {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+  }
+  
+  .signup-form .submit-button {
+    background-color: #646cff;
+    color: #ffffff;
+    border: 1px solid #646cff;
+  }
+  
+  .signup-form .submit-button:hover {
+    background-color: #535bf2;
+    border-color: #535bf2;
+  }
